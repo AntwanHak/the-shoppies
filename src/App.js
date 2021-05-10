@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import MovieList from './components/MovieList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+const App = () => {
+  const [movies, setMovies] = useState([]);
+
+  const getMovieRequest = async (searchValue) => {
+    const url = "http://www.omdbapi.com/?s=spider man&apikey=94769322";
+
+    const response = await fetch(url);
+    const responseJson = await response.json();
+
+    if (responseJson.Search) {
+      setMovies(responseJson.Search);
+    }
+  };
+
+  useEffect(() => {
+    getMovieRequest();
+  }, []);
+
+  return(
+  <div>
+    <div >
+      <MovieList movies={movies} />
     </div>
+  </div>
   );
-}
+};
+
 
 export default App;
